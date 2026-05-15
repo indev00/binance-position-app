@@ -61,6 +61,11 @@ class TickerService : Service() {
     private var bnbPriceFetchedAtMs: Long = 0
     private val BNB_PRICE_REFRESH_MS = 5 * 60 * 1000L
 
+    private var lastTitle: String? = null
+    private var lastText: String? = null
+    private var lastRawValue: Double? = null
+    private var lastRealized: String? = null
+
     @RequiresApi(Build.VERSION_CODES.BAKLAVA)
     override fun onCreate() {
         super.onCreate()
@@ -299,24 +304,39 @@ class TickerService : Service() {
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            updateNotification("PnL Live", "조회 실패", 0.0, "")
+            updateNotificationError()
         }
     }
 
     private fun updateNotification(title: String, text: String, rawValue: Double, realized: String) {
-        val notification = createNotification(title, text, rawValue, realized)
+        lastTitle = title
+        lastText = text
+        lastRawValue = rawValue
+        lastRealized = realized
+        val notification = createNotification(title, text, rawValue, realized, false)
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(NOTIFICATION_ID, notification)
     }
 
-    private fun createNotification(title: String, text: String, rawValue: Double, realized: String): Notification {
+    private fun updateNotificationError() {
+        val text = lastText?.let { "!$it" } ?: "!조회실패"
+        val notification = createNotification(
+            lastTitle ?: "PnL Live", text, lastRawValue ?: 0.0, lastRealized ?: "", true
+        )
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        manager.notify(NOTIFICATION_ID, notification)
+    }
+
+    private fun createNotification(title: String, text: String, rawValue: Double, realized: String, isError: Boolean = false): Notification {
         val pendingIntent = PendingIntent.getActivity(
             this, 0, Intent(this, MainActivity::class.java),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
         val formatText = "Pnl:$realized / $text"
 
-        val color = if (rawValue >= 0) 0xFF4CAF50.toInt() else 0xFFF44336.toInt()
+        val color = if (isError) 0xFF9E9E9E.toInt()
+                    else if (rawValue >= 0) 0xFF4CAF50.toInt()
+                    else 0xFFF44336.toInt()
         val extras = bundleOf(
             "android.ongoingActivityNoti.style" to 1,
             "android.ongoingActivityNoti.primaryInfo" to text,
