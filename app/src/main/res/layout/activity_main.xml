@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilApiKey"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Binance API Key"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="12dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etApiKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textNoSuggestions"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilApiSecret"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Binance API Secret"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilApiKey"
+        android:layout_marginTop="8dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etApiSecret"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword|textNoSuggestions"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnSaveKey"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="API Key 저장"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilApiSecret"
+        android:layout_marginTop="12dp" />
+
+    <RadioGroup
+        android:id="@+id/rgDisplayMode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnSaveKey"
+        android:layout_marginTop="20dp">
+
+        <RadioButton
+            android:id="@+id/rbUnrealizedPlusRealized"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="미실현손익 + 오늘실현손익"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/rbUnrealizedOnly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="미실현손익" />
+
+        <RadioButton
+            android:id="@+id/rbBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="실시간잔고" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tvIntervalLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="갱신 주기"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rgDisplayMode"
+        app:layout_constraintBottom_toBottomOf="@id/spInterval"
+        android:layout_marginTop="16dp" />
+
+    <Spinner
+        android:id="@+id/spInterval"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/tvIntervalLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rgDisplayMode"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="PnL 추적 시작"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spInterval"
+        android:layout_marginTop="20dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
